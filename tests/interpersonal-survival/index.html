@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>你的人际求生模式测试</title>
+  <style>
+    :root {
+      --bg: #0a0f1d;
+      --panel: rgba(255,255,255,.08);
+      --panel2: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.14);
+      --text: #f5f7ff;
+      --muted: #b6c0de;
+      --accent: #8b5cf6;
+      --accent2: #22d3ee;
+      --ok: #34d399;
+      --danger: #fb7185;
+      --shadow: 0 18px 46px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top, #1c2452 0%, #0a0f1d 42%, #060913 100%);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px 18px 56px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; }
+    .back {
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:14px;
+      background: var(--panel2); border:1px solid var(--border); color: var(--text); text-decoration:none;
+    }
+    .hero, .card, .result, .dim-box {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .hero { padding: 28px; }
+    h1 { margin: 0 0 12px; font-size: clamp(28px, 5vw, 44px); }
+    .lead { margin: 0; color: var(--muted); line-height: 1.85; }
+    .note {
+      margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.05);
+      color: #d8e0fb; line-height: 1.8; border:1px solid rgba(255,255,255,.1);
+    }
+    .sticky {
+      position: sticky; top: 12px; z-index: 20; margin: 18px 0;
+      display:flex; justify-content:space-between; gap:14px; align-items:center; flex-wrap:wrap;
+      padding: 16px 18px; border-radius: 20px; border:1px solid var(--border);
+      background: rgba(9,12,24,.82); backdrop-filter: blur(12px);
+    }
+    .progress { color: var(--muted); }
+    .progress strong { color: var(--text); }
+    button {
+      border: none; cursor: pointer; color: white; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 12px 18px; border-radius: 14px;
+    }
+    button.secondary {
+      background: rgba(255,255,255,.08); border:1px solid var(--border); color:var(--text);
+    }
+    .list { display: grid; gap: 16px; }
+    .card { padding: 22px; }
+    .qhead { display:flex; gap:12px; align-items:flex-start; }
+    .qid {
+      min-width: 40px; height: 40px; border-radius: 50%; display:grid; place-items:center; font-weight:800;
+      background: linear-gradient(135deg, rgba(139,92,246,.9), rgba(34,211,238,.85));
+    }
+    .qtext { font-size: 18px; line-height: 1.7; }
+    .options { display:grid; gap:10px; margin-top:16px; }
+    .option {
+      border:1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.04);
+      padding: 14px 16px; transition: .18s ease;
+    }
+    .option:hover { background: rgba(255,255,255,.07); }
+    .option label { display:flex; gap:12px; align-items:flex-start; cursor:pointer; line-height:1.75; }
+    .pill-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+    .pill {
+      padding: 8px 12px; border-radius:999px; background: rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1);
+      color:#d7def8; font-size:13px;
+    }
+    .hidden { display:none; }
+    .result { margin-top: 26px; padding: 28px; }
+    .result h2 { margin:0 0 6px; font-size: 34px; }
+    .subtitle { color:#d5defc; font-size:18px; margin-bottom: 14px; }
+    .score { color:#9fe6c8; font-weight:700; margin-bottom:10px; }
+    .result p { color: var(--muted); line-height: 1.85; }
+    .dim-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-top: 20px; }
+    .dim-box { padding: 18px; }
+    .dim-box h3 { margin:0 0 8px; font-size:18px; }
+    .dim-box p { margin:0; color:var(--muted); line-height:1.75; }
+    .footer-tip { margin-top: 18px; color:#9aa7cf; font-size:14px; line-height:1.75; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="topbar">
+      <a class="back" href="../../index.html">← 返回测试主页</a>
+    </div>
+
+    <section class="hero">
+      <h1>《你的人际求生模式测试》</h1>
+      <p class="lead">
+        平时的你，不一定是真正的你。真正暴露你“人际求生模式”的，往往是那些关系一紧张、情绪一上头、话到嘴边却开始变形的时刻。
+        这个测试不测“你想成为谁”，而是测你在关系压力一上来时，会本能地怎么表达、怎么靠近、怎么自保、怎么处理局面。
+      </p>
+      <div class="note">
+        作答说明：每题单选，选最像你的那个选项；不要选“理想中的自己”，而要选“关系一紧张时你最容易变成的自己”。
+        本测试偏娱乐和自我观察，不替代专业心理评估。
+      </div>
+      <div class="pill-row">
+        <span class="pill">24题</span>
+        <span class="pill">三维度判定</span>
+        <span class="pill">8种关系求生模式</span>
+      </div>
+    </section>
+
+    <div class="sticky">
+      <div class="progress">已作答 <strong id="answeredCount">0</strong> / 24</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="secondary" id="resetBtn" type="button">清空重做</button>
+        <button id="submitBtn" type="button">查看结果</button>
+      </div>
+    </div>
+
+    <section id="questionList" class="list"></section>
+    <section id="resultBox" class="result hidden"></section>
+  </main>
+
+  <script>
+    const questions = [
+      { id: 1, t: '群聊突然安静得像停尸房，你通常会：', A: '立刻丢个梗，把场子救回来', B: '先看两眼，等别人先动', C: '默默潜水，心想这场子塌了也不是我塌的' },
+      { id: 2, t: '一个你在意的人回消息越来越慢，你脑子里第一集通常是：', A: '他可能真的在忙，我再等等', B: '行，有点不对劲，但我先不发作', C: '好，关系警报器已经自己响了' },
+      { id: 3, t: '原本说好的安排突然全变了，你更像：', A: '立刻改计划，今天这事必须继续转', B: '先烦一下，再想怎么补救', C: '先摆烂一会儿，等人魂回来再说' },
+      { id: 4, t: '别人把你的意思完全理解歪了，你通常会：', A: '当场纠正，不然我能憋死', B: '看值不值得解释，稍微补两句', C: '算了，爱怎么想怎么想吧' },
+      { id: 5, t: '一个刚认识的人突然对你特别热情，你第一反应更像：', A: '那我也可以自然接住这份热情', B: '先聊着，边聊边看', C: '热情来得太快，我先往后站一步' },
+      { id: 6, t: '有件事你知道迟早得谈开，但你一点都不想碰，你通常会：', A: '咬咬牙约个时间，早点处理早点活', B: '再拖一拖，等气氛没这么炸', C: '先不谈，活人不碰高压线' },
+      { id: 7, t: '你说“没事”的时候，最接近哪种情况：', A: '真有事我一般会讲，不太爱演', B: '我有事，但我想看你会不会继续问', C: '我已经有事了，但嘴巴这会儿关门了' },
+      { id: 8, t: '一段关系明显变冷时，你更容易：', A: '主动问一句：你最近到底怎么了', B: '先等等，看是错觉还是真凉了', C: '既然你退了，那我也不追了' },
+      { id: 9, t: '事情一多，人一烦，待办清单像追债名单时，你通常会：', A: '先开做，干掉一项是一项', B: '先理一理顺序，再动手', C: '先假装看不见，等它快炸了再说' },
+      { id: 10, t: '别人认真夸你时，你更像：', A: '能接住，甚至还能回一句谢谢', B: '表面笑笑，心里有点别扭', C: '立刻转移话题，别再照我了我会想逃' },
+      { id: 11, t: '别人突然开始问你比较私人的事，你一般会：', A: '愿意讲一点，正常交流嘛', B: '看对方是谁，再决定开几道门', C: '本能把门一锁，今天不开放参观' },
+      { id: 12, t: '一个你很想要的机会摆在面前，你通常会：', A: '先冲，抢到再说', B: '先看看局势，确认不会太狼狈', C: '脑内已经把失败场景放完三遍了，人先退了' },
+      { id: 13, t: '你发朋友圈、动态这件事，更像：', A: '我有感觉就发，不想憋着', B: '挑着发，别太多，也别太空', C: '尽量不发，活着就行，不用全网知道' },
+      { id: 14, t: '别人跟你道歉时，你更常见的反应是：', A: '愿意继续沟通，看还能不能修', B: '听你说完，再决定这页翻不翻', C: '我知道你在道歉，但我的心门还没刷开' },
+      { id: 15, t: '现场突然尴尬得能抠出三室一厅时，你通常会：', A: '出来接话，把场面往回拉', B: '先观察，看有没有别人能救', C: '我先降低存在感，别把聚光灯打我脸上' },
+      { id: 16, t: '你一旦委屈上头，通常是：', A: '别人基本能看出来，我藏不住', B: '我会努力正常，但语气可能开始不太对', C: '越委屈越安静，像系统自动静音了' },
+      { id: 17, t: '有人想更深入地了解你，你更像：', A: '可以啊，聊到哪算哪', B: '慢慢来，别一下子扒太深', C: '先保持安全距离，近了我会想后退' },
+      { id: 18, t: '麻烦突然砸下来时，你的默认模式通常是：', A: '先处理，处理完再崩', B: '先拉个人商量一下', C: '先让我消失十分钟，不然脑子转不动' },
+      { id: 19, t: '你说“你开心就好”的时候，真实含义更接近：', A: '我确实尊重你的决定', B: '我有点不爽，但还没决定要不要展开', C: '我已经不想讲了，你自己品吧' },
+      { id: 20, t: '别人来找你帮忙时，你大多会：', A: '只要我能接住，就会接一下', B: '先看关系、内容和我当天剩多少命', C: '先判断这事会不会把我拖进坑里' },
+      { id: 21, t: '一件烂事拖了很久还没解决，你通常会：', A: '忍不了，想尽快给它一个结局', B: '再放一放，等更合适的时候', C: '只要今天还没炸到我脚边，我先不碰' },
+      { id: 22, t: '你状态明显不对，别人问你“怎么了”，你通常会：', A: '说一点真的，不然问了也白问', B: '先说“没什么”，看你到底接不接得住', C: '不说，今天这扇门不营业' },
+      { id: 23, t: '同一种关系问题你已经被伤过一次，这次再碰见类似苗头时，你通常会：', A: '提前把需求和边界说清楚', B: '先观察，不着急下判断', C: '直接把防御系统提前开机' },
+      { id: 24, t: '吵完架后的第二天，你更像：', A: '主动收尾，该谈谈，该和和', B: '只要对方来，我就愿意接', C: '先冷着，等我心里那股气自己散一点' }
+    ];
+
+    const groups = {
+      expression: { name: '表达方式', ids: [1,4,7,10,13,16,19,22], high: '外露', low: '内敛', tiebreak: 22 },
+      relation: { name: '关系策略', ids: [2,5,8,11,14,17,20,23], high: '靠近', low: '设防', tiebreak: 23 },
+      coping: { name: '应对方式', ids: [3,6,9,12,15,18,21,24], high: '推进', low: '回撤', tiebreak: 24 }
+    };
+
+    const results = {
+      '外露|靠近|推进': {
+        name: '点火突围型',
+        subtitle: '场面抢修员',
+        desc: '关系一冷下来，你往往不是先退，而是先上。你不太信问题会自己好，也不太习惯靠沉默熬过去。你更像是一个会主动开口、追问、补救、拉回局面的“抢修型选手”。优点是有行动力、能推进关系；风险是有时会在对方还没准备好的时候，把场面推得太快。'
+      },
+      '外露|靠近|回撤': {
+        name: '共振缓冲型',
+        subtitle: '氛围接球手',
+        desc: '你愿意靠近，也愿意回应，但比起硬闯，你更擅长在关系里接住情绪、缓冲张力。你不会轻易完全切断联系，可在真正高压时刻，也会选择先放慢一点、等气氛回温。你属于会照顾氛围的人，但有时也会把自己的委屈先往后压。'
+      },
+      '外露|设防|推进': {
+        name: '控场持盾型',
+        subtitle: '关系值班员',
+        desc: '你不是不行动，而是会一边行动、一边带着盾。你有表达力，也有推进问题的能力，但不会毫无保留地把自己交出去。你习惯边处理边观察，既想把局面稳住，也不允许自己彻底失守。你给人的感觉通常是强、稳、能扛，但内里其实一直在做边界管理。'
+      },
+      '外露|设防|回撤': {
+        name: '嘴硬撤离型',
+        subtitle: '炸毛撤退员',
+        desc: '你在不舒服时并不一定沉默，很多时候会先顶一句、先表态、先炸毛，但一旦真的感到危险或失望，就会快速把自己撤回去。你表面看上去像是在反击，实际上是自保系统启动得很快。你的优势是敏锐、反应快；难点是别人有时只看见你的刺，看不见你撤退背后的受伤。'
+      },
+      '内敛|靠近|推进': {
+        name: '静水修复型',
+        subtitle: '静音修补匠',
+        desc: '你不是高调的人，但在真正重要的关系里，你其实愿意修，也愿意往前做事。只是你的推进往往比较安静，不爱张扬，更像是默默处理、慢慢修复。你看起来温和克制，实际上比很多人都更愿意为关系付出行动。'
+      },
+      '内敛|靠近|回撤': {
+        name: '敏感蓄压型',
+        subtitle: '高压感应器',
+        desc: '你对关系很敏感，也很在意连接，但越在意，越容易先把感受压住。你会观察、会等待、会揣摩，也愿意保留关系，但不太会在第一时间把真实需求全说出来。你的温度不低，只是表达得慢，所以常常看起来比实际更冷静。'
+      },
+      '内敛|设防|推进': {
+        name: '冷静掌舵型',
+        subtitle: '边界操盘手',
+        desc: '你不喜欢情绪化地把自己摊开，但也不会完全逃避问题。你更像是安静地抓方向、抓重点、抓节奏的人。该处理的事你会处理，该守住的边界你也会守住。你常给人一种很稳的感觉，像是关系里的隐形掌舵者。'
+      },
+      '内敛|设防|回撤': {
+        name: '静默自保型',
+        subtitle: '安全壳住民',
+        desc: '你在人际压力面前最明显的本能，是先保护自己。你不会轻易失控，也不会轻易暴露，但当风险感上来时，会迅速收口、设防、后退。你不是没感觉，恰恰相反，你通常是感觉很多，只是更习惯把自己藏进安全壳里。'
+      }
+    };
+
+    const scoreMap = { A: 2, B: 1, C: 0 };
+    const qList = document.getElementById('questionList');
+    const answeredCount = document.getElementById('answeredCount');
+    const resultBox = document.getElementById('resultBox');
+
+    function renderQuestions() {
+      qList.innerHTML = questions.map(q => `
+        <article class="card">
+          <div class="qhead">
+            <div class="qid">${q.id}</div>
+            <div class="qtext">${q.t}</div>
+          </div>
+          <div class="options">
+            ${['A','B','C'].map(key => `
+              <div class="option">
+                <label>
+                  <input type="radio" name="q${q.id}" value="${key}" />
+                  <span><strong>${key}.</strong> ${q[key]}</span>
+                </label>
+              </div>
+            `).join('')}
+          </div>
+        </article>
+      `).join('');
+      qList.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', updateAnsweredCount);
+      });
+    }
+
+    function getAnswers() {
+      const answers = {};
+      for (const q of questions) {
+        const checked = document.querySelector(`input[name="q${q.id}"]:checked`);
+        if (checked) answers[q.id] = checked.value;
+      }
+      return answers;
+    }
+
+    function updateAnsweredCount() {
+      answeredCount.textContent = Object.keys(getAnswers()).length;
+    }
+
+    function classify(group, answers) {
+      const vals = group.ids.map(id => scoreMap[answers[id]] ?? 0);
+      const score = vals.reduce((a,b) => a+b, 0);
+      const choices = group.ids.map(id => answers[id]).filter(Boolean);
+      const countA = choices.filter(x => x === 'A').length;
+      const countC = choices.filter(x => x === 'C').length;
+      let label;
+      if (score >= 9) label = group.high;
+      else if (score <= 7) label = group.low;
+      else if (countA > countC) label = group.high;
+      else if (countC > countA) label = group.low;
+      else {
+        const tie = answers[group.tiebreak];
+        label = (tie === 'C') ? group.low : group.high;
+      }
+      return { score, label };
+    }
+
+    function showResult() {
+      const answers = getAnswers();
+      if (Object.keys(answers).length !== questions.length) {
+        alert('还有题目没有完成，请先把 24 题全部答完。');
+        return;
+      }
+      const exp = classify(groups.expression, answers);
+      const rel = classify(groups.relation, answers);
+      const cop = classify(groups.coping, answers);
+      const key = `${exp.label}|${rel.label}|${cop.label}`;
+      const result = results[key];
+      const similarity = 70 + Math.round(((Math.abs(exp.score - 8) + Math.abs(rel.score - 8) + Math.abs(cop.score - 8)) / 24) * 26);
+
+      resultBox.classList.remove('hidden');
+      resultBox.innerHTML = `
+        <div class="score">类型匹配度：${similarity}%</div>
+        <h2>${result.name}</h2>
+        <div class="subtitle">${result.subtitle}</div>
+        <p><strong>维度组合：</strong>${exp.label} + ${rel.label} + ${cop.label}</p>
+        <p>${result.desc}</p>
+        <div class="dim-grid">
+          <div class="dim-box">
+            <h3>表达方式</h3>
+            <p>得分：${exp.score} / 16</p>
+            <p>判定：${exp.label}</p>
+          </div>
+          <div class="dim-box">
+            <h3>关系策略</h3>
+            <p>得分：${rel.score} / 16</p>
+            <p>判定：${rel.label}</p>
+          </div>
+          <div class="dim-box">
+            <h3>应对方式</h3>
+            <p>得分：${cop.score} / 16</p>
+            <p>判定：${cop.label}</p>
+          </div>
+        </div>
+        <div class="footer-tip">
+          说明：本测试偏娱乐和自我观察，不替代专业心理评估。匹配度越高，表示你的三维组合越稳定、越明显。
+        </div>
+      `;
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetAll() {
+      document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+      resultBox.classList.add('hidden');
+      resultBox.innerHTML = '';
+      updateAnsweredCount();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    renderQuestions();
+    updateAnsweredCount();
+    document.getElementById('submitBtn').addEventListener('click', showResult);
+    document.getElementById('resetBtn').addEventListener('click', resetAll);
+  </script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SBTI-PLUS｜sbti-final-selfhost</title>
+  <style>
+    :root {
+      --bg: #07111e;
+      --panel: rgba(255,255,255,.08);
+      --panel2: rgba(255,255,255,.05);
+      --border: rgba(255,255,255,.14);
+      --text: #f4f7ff;
+      --muted: #b7c2df;
+      --accent: #8b5cf6;
+      --accent2: #06b6d4;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --shadow: 0 18px 48px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top, #1a2950 0%, #07111e 44%, #040811 100%);
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 24px 18px 56px; }
+    .topbar { margin-bottom: 18px; }
+    .back { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:14px; text-decoration:none; color:var(--text); background:var(--panel2); border:1px solid var(--border); }
+    .hero, .sticky, .card, .result, .dim, .pattern-card {
+      border:1px solid var(--border); border-radius:24px; background:var(--panel); box-shadow:var(--shadow); backdrop-filter:blur(10px);
+    }
+    .hero { padding:28px; }
+    h1 { margin:0 0 12px; font-size: clamp(30px, 5vw, 46px); }
+    .lead { color:var(--muted); line-height:1.85; margin:0; }
+    .note { margin-top:16px; padding:14px 16px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:#d7e0fc; line-height:1.8; }
+    .pill-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+    .pill { padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.06); color:#d5ddfb; font-size:13px; }
+    .sticky {
+      position: sticky; top: 12px; z-index: 20; margin: 18px 0;
+      display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;
+      padding:16px 18px; background: rgba(8,12,25,.82);
+    }
+    button { border:none; cursor:pointer; color:#fff; font-weight:700; padding:12px 18px; border-radius:14px; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+    button.secondary { background:rgba(255,255,255,.08); border:1px solid var(--border); }
+    .progress { color:var(--muted); }
+    .list { display:grid; gap:16px; }
+    .card { padding:22px; }
+    .qhead { display:flex; gap:12px; align-items:flex-start; }
+    .qid { min-width:42px; height:42px; border-radius:50%; display:grid; place-items:center; font-weight:800; background: linear-gradient(135deg, rgba(139,92,246,.92), rgba(6,182,212,.85)); }
+    .qmeta { color:#9fe6c8; font-size:12px; margin-top:6px; }
+    .qtext { font-size:18px; line-height:1.75; }
+    .options { display:grid; gap:10px; margin-top:16px; }
+    .option { padding:14px 16px; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,.04); }
+    .option label { display:flex; gap:12px; align-items:flex-start; cursor:pointer; line-height:1.75; }
+    .hidden { display:none; }
+    .result { margin-top:26px; padding:28px; }
+    .code { display:inline-block; padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); margin-bottom:10px; }
+    .result h2 { margin:0 0 6px; font-size:36px; }
+    .intro { font-size:18px; color:#d9e3ff; margin-bottom:10px; }
+    .desc { color:var(--muted); line-height:1.9; }
+    .dim-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:14px; margin-top:20px; }
+    .dim { padding:18px; }
+    .dim h3 { margin:0 0 8px; font-size:18px; }
+    .dim p { margin:0; color:var(--muted); line-height:1.7; }
+    .pattern-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-top:20px; }
+    .pattern-card { padding:18px; }
+    .pattern-card h4 { margin:0 0 8px; }
+    .small { color:#9caad4; font-size:14px; line-height:1.75; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="topbar"><a class="back" href="../../index.html">← 返回测试主页</a></div>
+
+    <section class="hero">
+      <h1>SBTI-PLUS｜sbti-final-selfhost</h1>
+      <p class="lead">
+        这是 SBTI 的升级版本。系统会根据你的作答生成 15 个维度的 L / M / H 向量，再与预设人格库进行匹配，输出最佳人格代码、匹配度、维度解释和特殊隐藏判定结果。
+      </p>
+      <div class="note">
+        作答说明：请按“更像现在的你”来回答，不要按理想状态作答。本测试为娱乐向人格匹配，不替代正式心理评估。
+      </div>
+      <div class="pill-row">
+        <span class="pill">15维度</span>
+        <span class="pill">31~32题</span>
+        <span class="pill">常规人格库 + 特殊判定</span>
+      </div>
+    </section>
+
+    <div class="sticky">
+      <div class="progress">已作答 <strong id="answeredCount">0</strong> / <span id="totalCount">31</span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="secondary" id="resetBtn" type="button">清空重做</button>
+        <button id="submitBtn" type="button">生成人格结果</button>
+      </div>
+    </div>
+
+    <section id="questionList" class="list"></section>
+    <section id="resultBox" class="result hidden"></section>
+  </main>
+
+  <script>
+    const regularQuestions = [
+      { id:'q1', dim:'S1', t:'别人当众评价你时，你心里的默认反应更像：', options:[['A','我大体接得住评价，心里不至于瞬间散架',1],['B','要看是谁说、怎么说，我会先观察',2],['C','很容易先怀疑自己是不是哪里又不对了',3]] },
+      { id:'q2', dim:'S1', t:'当你做得还不错时，你通常会：', options:[['A','认可自己这次确实发挥得可以',3],['B','还行吧，先别吹太早',2],['C','总觉得别人迟早会发现我只是运气好',1]] },
+      { id:'q3', dim:'S2', t:'你对“我到底是什么样的人”这件事的感觉更像：', options:[['A','大体清楚，自己是什么路数心里有数',3],['B','有些部分清楚，有些部分要看状态',2],['C','经常像开了很多窗口，却不知道哪个是自己',1]] },
+      { id:'q4', dim:'S2', t:'碰到选择时，你对自己真实想要什么通常是：', options:[['A','能比较快分辨自己真正想要的方向',3],['B','有时清楚，有时会被情绪带偏',2],['C','常常纠结很久，分不清是想要还是只是害怕失去',1]] },
+      { id:'q5', dim:'S3', t:'你的人生更容易被哪种感觉驱动：', options:[['A','目标、成长、意义感，最好别白活',3],['B','也想前进，但舒服和稳定也很重要',2],['C','别搞太多宏大叙事，先让自己轻松点再说',1]] },
+      { id:'q6', dim:'S3', t:'当一件事很难但很重要时，你通常会：', options:[['A','难也得干，重要就值得往前推',3],['B','看情况，有时会冲，有时会先缓一缓',2],['C','如果太费命，我会先考虑值不值得',1]] },
+      { id:'q7', dim:'E1', t:'在重要关系里，你更容易觉得：', options:[['A','关系总体是稳的，问题来了也能谈',3],['B','有时稳有时不稳，要看对方状态',2],['C','人是会走的，安全感得自己盯着',1]] },
+      { id:'q8', dim:'E1', t:'当对方没有及时回应你时，你更像：', options:[['A','先默认对方有现实原因，不急着脑补',3],['B','会有点介意，但还能压住',2],['C','心里很快就开始响起关系警报',1]] },
+      { id:'q9', dim:'E2', t:'喜欢一个人或在意一段关系时，你通常：', options:[['A','会投入，也愿意表达投入',3],['B','会投入，但会边投入边观察',2],['C','容易想靠近，但真正投入时会犹豫',1]] },
+      { id:'q10', dim:'E2', t:'关系升温时，你更可能：', options:[['A','愿意认真经营，不怕投入感情和精力',3],['B','可以投入，但节奏不能太快',2],['C','会下意识留一点，不想先交太多底牌',1]] },
+      { id:'q11', dim:'E3', t:'你在人际关系里的边界感更像：', options:[['A','靠近可以，但边界我自己清楚',2],['B','看人，熟了会更容易放松边界',1],['C','边界偏强，别人太近我会先退半步',3]] },
+      { id:'q12', dim:'E3', t:'当别人开始依赖你时，你更可能：', options:[['A','只要关系对，我能接住不少',1],['B','先看程度，别一下子全压我身上',2],['C','会担心被缠住，所以先把距离拉好',3]] },
+      { id:'q13', dim:'A1', t:'你对世界的默认看法更接近：', options:[['A','世界挺现实，但也不是完全不能合作',2],['B','总体还算能运转，我会先看可行面',1],['C','很多时候我会先看到问题、漏洞和风险',3]] },
+      { id:'q14', dim:'A1', t:'听到一个新计划时，你第一反应通常是：', options:[['A','想看看有什么可能性',1],['B','先中立观察，再决定站哪边',2],['C','先想这里面会出什么事',3]] },
+      { id:'q15', dim:'A2', t:'面对规则时，你更像：', options:[['A','规则有用，但不能僵死，必要时要会变通',2],['B','先按规则来，除非现实真的不允许',3],['C','别拿规则吓我，能解决问题比形式更重要',1]] },
+      { id:'q16', dim:'A2', t:'别人说“这事以前一直这么做”时，你常见反应是：', options:[['A','那也不代表现在还得这么做',1],['B','先看原本做法有没有道理',2],['C','既然已有流程，先别乱改',3]] },
+      { id:'q17', dim:'A3', t:'你对“人生意义”这件事的状态更像：', options:[['A','我最好知道自己为什么做这件事',3],['B','偶尔会想，但没必要天天高强度追问',2],['C','意义这题太大了，我先活完今天',1]] },
+      { id:'q18', dim:'A3', t:'当生活很重复时，你更容易：', options:[['A','想确认自己不是在机械活着',3],['B','会无聊，但还能接受',2],['C','重复就重复吧，别额外增加精神负担',1]] },
+      { id:'q19', dim:'Ac1', t:'你做事更容易被什么推着走：', options:[['A','目标、结果、把事情做成的快感',3],['B','看情况，有时被兴趣带，有时被结果带',2],['C','要先有感觉，不然很难硬推进',1]] },
+      { id:'q20', dim:'Ac1', t:'当一件事摆在那儿没人管时，你通常：', options:[['A','容易想把它收掉，不喜欢一直挂着',3],['B','如果重要就动，不重要就放一会儿',2],['C','得先有情绪和状态，才比较动得起来',1]] },
+      { id:'q21', dim:'Ac2', t:'你做决定时更像：', options:[['A','能比较快拍板，先动起来再说',3],['B','会综合权衡，但不至于无限拖',2],['C','很容易多想，想把每种后果都先算完',1]] },
+      { id:'q22', dim:'Ac2', t:'在选择A还是B都不完美时，你更常见的模式是：', options:[['A','选一个先走，别卡死',3],['B','再看一下，尽量别做太亏的决定',2],['C','会想很多轮，担心自己选错',1]] },
+      { id:'q23', dim:'Ac3', t:'你对待执行和截止日期的关系更像：', options:[['A','事情不落地我会不舒服，会想尽快推进',3],['B','能做，但状态和时机会影响速度',2],['C','越临近死线越像突然觉醒',1]] },
+      { id:'q24', dim:'Ac3', t:'当任务已经摊开时，你通常：', options:[['A','倾向于早点动手，把进度握住',3],['B','会先理思路，再慢慢推进',2],['C','会先拖一会儿，直到压力够大',1]] },
+      { id:'q25', dim:'So1', t:'在不熟的人群里，你通常：', options:[['A','愿意主动打开场子，先开个头',3],['B','有人来我就接，没人来也不硬凑',2],['C','社交启动偏慢热，要先缓冲一下',1]] },
+      { id:'q26', dim:'So1', t:'朋友带了ta的朋友一起来玩，你最可能的状态是：', options:[['A','对“朋友的朋友”天然有点距离感，怕影响二人关系',1],['B','看对方，能玩就玩',2],['C','朋友的朋友应该也算我的朋友！要热情聊天',3]] },
+      { id:'q27', dim:'So2', t:'我和人相处主打一个电子围栏，靠太近会自动报警。', options:[['A','认同',3],['B','中立',2],['C','不认同',1]] },
+      { id:'q28', dim:'So2', t:'我渴望和我信任的人关系密切，熟得像失散多年的亲戚。', options:[['A','认同',1],['B','中立',2],['C','不认同',3]] },
+      { id:'q29', dim:'So3', t:'有时候你明明对一件事有不同的、负面的看法，但最后没说出来。多数情况下原因是：', options:[['A','这种情况较少',1],['B','可能碍于情面或者关系',2],['C','不想让别人知道自己是个阴暗的人',3]] },
+      { id:'q30', dim:'So3', t:'我在不同人面前会表现出不一样的自己。', options:[['A','不认同',1],['B','中立',2],['C','认同',3]] }
+    ];
+
+    const specialQ1 = { id:'drink_gate_q1', t:'您平时有什么爱好？', options:[['A','吃喝拉撒',1],['B','艺术爱好',2],['C','饮酒',3],['D','健身',4]] };
+    const specialQ2 = { id:'drink_gate_q2', t:'您对饮酒的态度是？', options:[['A','小酌怡情，喝不了太多。',1],['B','我习惯将白酒灌在保温杯，当白开水喝，酒精令我信服。',2]] };
+
+    const dimensionExplain = {
+      S1:{name:'自尊自信',L:'对自己下手比别人还狠，夸你两句你都想先验明真伪。',M:'自信值随天气波动，顺风能飞，逆风先缩。',H:'心里对自己大致有数，不太会被路人一句话打散。'},
+      S2:{name:'自我清晰度',L:'内心频道雪花较多，常在“我是谁”里循环缓存。',M:'平时还能认出自己，偶尔也会被情绪临时换号。',H:'对自己的脾气、欲望和底线都算门儿清。'},
+      S3:{name:'核心价值',L:'更在意舒服和安全，没必要天天给人生开冲刺模式。',M:'想上进，也想躺会儿，价值排序经常内部开会。',H:'很容易被目标、成长或某种重要信念推着往前。'},
+      E1:{name:'依恋安全感',L:'关系里警报系统偏灵敏，风吹草动都像有事。',M:'安全感看状态，有时稳，有时会自己乱响。',H:'关系基本盘相对稳定，不会轻易被一条消息打翻。'},
+      E2:{name:'情感投入度',L:'靠近可以，但真要全情投入会先卡一下。',M:'能投入，但节奏和安全感很重要。',H:'投入感比较高，愿意认真对待在意的人和关系。'},
+      E3:{name:'边界与依赖',L:'熟了就容易靠近和融合。',M:'想亲近，也会留余地。',H:'边界偏强，关系太近会先自动后退半步。'},
+      A1:{name:'世界观倾向',L:'会先看机会面，没必要把世界默认成高危区。',M:'乐观和警惕都保留一点。',H:'风险雷达常开，容易先看到问题和漏洞。'},
+      A2:{name:'规则与灵活度',L:'形式不是核心，解决问题更重要。',M:'规则能用就用，不能用再调。',H:'更重视流程、秩序和稳定做法。'},
+      A3:{name:'人生意义感',L:'先把日子过完，不必天天追问宇宙。',M:'偶尔想意义，偶尔想晚饭。',H:'希望做事不只是做完，而是能对得起某种更重要的东西。'},
+      Ac1:{name:'动机导向',L:'没感觉就难推进，行动常靠状态点火。',M:'兴趣和结果都能驱动一点。',H:'目标和结果会明显推着你往前。'},
+      Ac2:{name:'决策风格',L:'多想、反复评估、怕选错。',M:'会权衡，但还能落下决定。',H:'拍板速度偏快，先走起来更重要。'},
+      Ac3:{name:'执行模式',L:'执行力和死线有深厚感情，越晚越像要觉醒。',M:'能做，但状态看时机，偶尔稳偶尔摆。',H:'推进欲比较强，事情不落地心里都像卡了根刺。'},
+      So1:{name:'社交主动性',L:'社交启动慢热，主动出击这事通常得攒半天气。',M:'有人来就接，没人来也不硬凑。',H:'更愿意主动打开场子，在人群里不太怕露头。'},
+      So2:{name:'人际边界感',L:'关系里更想亲近和融合，熟了就容易把人划进内圈。',M:'既想亲近又想留缝，边界感看对象调节。',H:'边界感偏强，靠太近会先本能性后退半步。'},
+      So3:{name:'表达与真实度',L:'表达更直接，心里有啥基本不爱绕。',M:'会看气氛说话，真实和体面通常各留一点。',H:'对不同场景的自我切换更熟练，真实感会分层发放。'}
+    };
+
+    const patterns = {
+      CTRL:'HHH-HMH-MHH-HHH-MHM', ATM:'HHH-HHM-HHH-HMH-MHL', DIOR:'MHM-MMH-MHM-HMH-LHL', BOSS:'HHH-HMH-MMH-HHH-LHL', THANK:'MHM-HMM-HHM-MMH-MHL', OHNO:'HHL-LMH-LHH-HHM-LHL', GOGO:'HHM-HMH-MMH-HHH-MHM', SEXY:'HMH-HHL-HMM-HMM-HLH', LOVER:'MLH-LHL-HLH-MLM-MLH', MUM:'MMH-MHL-HMM-LMM-HLL', FAKE:'HLM-MML-MLM-MLM-HLH', OJBK:'MMH-MMM-HML-LMM-MML', MALO:'MLH-MHM-MLH-MLH-LMH', JOKER:'LLH-LHL-LML-LLL-MLM', WOC:'HHL-HMH-MMH-HHM-LHH', THINK:'HHL-HMH-MLH-MHM-LHH', SHIT:'HHL-HLH-LMM-HHM-LHH', ZZZZ:'MHL-MLH-LML-MML-LHM', POOR:'HHL-MLH-LMH-HHH-LHL', MONK:'HHL-LLH-LLM-MML-LHM', IMSB:'LLM-LMM-LLL-LLL-MLM', SOLO:'LML-LLH-LHL-LML-LHM', FUCK:'MLL-LHL-LLM-MLL-HLH', DEAD:'LLL-LLM-LML-LLL-LHM', IMFW:'LLH-LHL-LML-LLL-MLL'
+    };
+
+    const resultTexts = {
+      CTRL:['拿捏者','怎么样，被我拿捏了吧？','你像一台自带保存键的人形任务管理器，能把混乱重新拉回秩序。'],
+      ATM:['送钱者','你以为我很有钱吗？','你不一定真的送钱，但很容易在关系里支付时间、精力和耐心。'],
+      DIOR:['屌丝','等着我屌丝逆袭。','你对虚张声势的成功学天然免疫，更重视真实感和体感。'],
+      BOSS:['老板','先别慌，我看着。','你有控场欲，也有推进力，习惯把局面抓在自己手里。'],
+      THANK:['体面人','谢了，但别太大声。','你在关系里讲分寸、讲反馈、讲彼此舒服的边界。'],
+      OHNO:['哦不人','哦不！我怎么会是这个人格？！','你的风险雷达开得很早，习惯在问题变大前先把它摁住。'],
+      GOGO:['行者','gogogo~出发咯','你偏行动导向，很多事对你来说不是讨论题，而是待办项。'],
+      SEXY:['尤物','您就是天生的尤物！','你存在感很强，不一定要费劲表达，也容易被人注意到。'],
+      LOVER:['多情者','爱意太满，现实显得有点贫瘠。','你情感浓度高，容易把关系和体验活成连续剧。'],
+      MUM:['妈妈','或许...我可以叫你妈妈吗....?','你有安抚力和共情力，常常先照顾别人，再慢慢照顾自己。'],
+      FAKE:['伪人','已经，没有人类了。','你很会根据场景切换表达方式，像高性能社交变形器。'],
+      OJBK:['无所谓人','我说随便，是真的随便。','你对很多外部选择并不想过度投入，主打一个都行。'],
+      MALO:['吗喽','人生是个副本，而我只是一只吗喽。','你不爱被文明流程过度驯化，更喜欢有趣和灵活的活法。'],
+      JOKER:['小丑','原来我们都是小丑。','你很会制造气氛，但有时笑声下面也藏着没说出口的东西。'],
+      WOC:['握草人','卧槽，我怎么是这个人格？','你表面惊叹，后台冷静，很多事其实都在你意料之中。'],
+      THINK:['思考者','已深度思考100s。','你擅长分析、归档、拆逻辑，不容易轻易跟风。'],
+      SHIT:['愤世者','这个世界，构石一坨。','你嘴上吐槽世界，手上却常常默默把烂摊子收拾明白。'],
+      ZZZZ:['装死者','我没死，我只是在睡觉。','你平时像离线，死线一到却会突然苏醒并完成任务。'],
+      POOR:['贫困者','我穷，但我很专。','你会把资源压成一束激光，不重要的都降噪，重要的狠狠干到底。'],
+      MONK:['僧人','没有那种世俗的欲望。','你很重视个人空间和独立轨道，不喜欢被关系过度侵入。'],
+      IMSB:['傻者','认真的么？我真的是傻逼么？','你内心常有“想冲”和“自我否定”两股力量同时打架。'],
+      SOLO:['孤儿','我哭了，我怎么会是孤儿？','你容易先把自己围起来，怕靠太近，也怕别人离开。'],
+      FUCK:['草者','操！这是什么人格？','你有很强的生命力和反驯化倾向，不太愿意被规则轻松收编。'],
+      DEAD:['死者','我，还活着吗？','你像是把很多外界拉扯都看淡了，对喧闹世界保持距离。'],
+      IMFW:['废物','我真的...是废物吗？','你不是没价值，只是更容易脆弱、认真，也更容易全心信任。'],
+      HHHH:['傻乐者','哈哈哈哈哈哈。','你的脑回路太清奇，标准人格库一时集体罢工了。'],
+      DRUNK:['酒鬼','烈酒烧喉，不得不醉。','特殊隐藏人格。不是人格库算出来的，是酒精异常因子直接接管。']
+    };
+
+    const displayNames = { CTRL:'CTRL', ATM:'ATM-er', DIOR:'Dior-s', BOSS:'BOSS', THANK:'THAN-K', OHNO:'OH-NO', GOGO:'GOGO', SEXY:'SEXY', LOVER:'LOVE-R', MUM:'MUM', FAKE:'FAKE', OJBK:'OJBK', MALO:'MALO', JOKER:'JOKE-R', WOC:'WOC!', THINK:'THIN-K', SHIT:'SHIT', ZZZZ:'ZZZZ', POOR:'POOR', MONK:'MONK', IMSB:'IMSB', SOLO:'SOLO', FUCK:'FUCK', DEAD:'DEAD', IMFW:'IMFW', HHHH:'HHHH', DRUNK:'DRUNK' };
+
+    const order = ['S1','S2','S3','E1','E2','E3','A1','A2','A3','Ac1','Ac2','Ac3','So1','So2','So3'];
+    const qList = document.getElementById('questionList');
+    const answeredCount = document.getElementById('answeredCount');
+    const totalCount = document.getElementById('totalCount');
+    const resultBox = document.getElementById('resultBox');
+
+    function allQuestions() {
+      const extra = getAnswers()['drink_gate_q1'] === 'C' ? [specialQ2] : [];
+      return [...regularQuestions, specialQ1, ...extra];
+    }
+
+    function render() {
+      const all = [...regularQuestions, specialQ1];
+      qList.innerHTML = all.map(renderQuestion).join('') + `<div id="conditionalWrap"></div>`;
+      bindEvents();
+      updateConditionalQuestion();
+      updateAnsweredCount();
+    }
+
+    function renderQuestion(q) {
+      return `
+        <article class="card" id="card-${q.id}">
+          <div class="qhead">
+            <div class="qid">${q.id.startsWith('q') ? q.id.replace('q','') : '特'}</div>
+            <div>
+              <div class="qtext">${q.t}</div>
+              ${q.dim ? `<div class="qmeta">维度：${q.dim} · ${dimensionExplain[q.dim].name}</div>` : `<div class="qmeta">特殊题</div>`}
+            </div>
+          </div>
+          <div class="options">
+            ${q.options.map(([k, label]) => `
+              <div class="option">
+                <label>
+                  <input type="radio" name="${q.id}" value="${k}" />
+                  <span><strong>${k}.</strong> ${label}</span>
+                </label>
+              </div>
+            `).join('')}
+          </div>
+        </article>
+      `;
+    }
+
+    function bindEvents() {
+      qList.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => {
+          updateConditionalQuestion();
+          updateAnsweredCount();
+        });
+      });
+    }
+
+    function getAnswers() {
+      const ids = [...regularQuestions.map(q => q.id), 'drink_gate_q1', 'drink_gate_q2'];
+      const answers = {};
+      ids.forEach(id => {
+        const checked = document.querySelector(`input[name="${id}"]:checked`);
+        if (checked) answers[id] = checked.value;
+      });
+      return answers;
+    }
+
+    function updateConditionalQuestion() {
+      const wrap = document.getElementById('conditionalWrap');
+      const ans = getAnswers()['drink_gate_q1'];
+      if (ans === 'C') {
+        if (!document.getElementById(`card-${specialQ2.id}`)) {
+          wrap.innerHTML = renderQuestion(specialQ2);
+          bindEvents();
+        }
+        totalCount.textContent = '32';
+      } else {
+        wrap.innerHTML = '';
+        totalCount.textContent = '31';
+      }
+    }
+
+    function updateAnsweredCount() {
+      answeredCount.textContent = Object.keys(getAnswers()).filter(k => k !== 'drink_gate_q2' || getAnswers()['drink_gate_q1'] === 'C').length;
+    }
+
+    function level(score) {
+      if (score <= 3) return 'L';
+      if (score === 4) return 'M';
+      return 'H';
+    }
+
+    function codeToNum(ch) { return ch === 'L' ? 1 : ch === 'M' ? 2 : 3; }
+
+    function patternToArray(p) { return p.split('-').join('').split(''); }
+
+    function compute() {
+      const ans = getAnswers();
+      const required = [...regularQuestions.map(q => q.id), 'drink_gate_q1'];
+      if (ans['drink_gate_q1'] === 'C') required.push('drink_gate_q2');
+      const missing = required.filter(id => !ans[id]);
+      if (missing.length) {
+        alert('还有题目没有完成，请先把当前应作答的题目全部答完。');
+        return;
+      }
+
+      const dimScores = {};
+      for (const dim of order) {
+        const qs = regularQuestions.filter(q => q.dim === dim);
+        const score = qs.reduce((sum, q) => {
+          const opt = q.options.find(x => x[0] === ans[q.id]);
+          return sum + (opt ? opt[2] : 0);
+        }, 0);
+        dimScores[dim] = { score, lv: level(score) };
+      }
+
+      const vector = order.map(dim => dimScores[dim].lv);
+      let ranked = Object.entries(patterns).map(([code, pattern]) => {
+        const arr = patternToArray(pattern);
+        const distance = arr.reduce((sum, ch, i) => sum + Math.abs(codeToNum(ch) - codeToNum(vector[i])), 0);
+        const exact = arr.reduce((sum, ch, i) => sum + (ch === vector[i] ? 1 : 0), 0);
+        const similarity = Math.max(0, Math.round((1 - distance / 30) * 100));
+        return { code, pattern, distance, exact, similarity };
+      }).sort((a,b) => a.distance - b.distance || b.exact - a.exact || b.similarity - a.similarity);
+
+      let chosen = ranked[0];
+      let specialNote = '普通结果友情提示：本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。你可以笑，但别太当真。';
+
+      if (ans['drink_gate_q2'] === 'B') {
+        chosen = { code:'DRUNK', similarity:100, exact:15, distance:0, pattern:'special' };
+        specialNote = '特殊结果友情提示：本测试仅供娱乐。隐藏人格和傻乐兜底都属于作者故意埋的损招，请勿把它当成医学、心理学、相学、命理学或灵异学依据。';
+      } else if (chosen.similarity < 60) {
+        chosen = { code:'HHHH', similarity: ranked[0].similarity, exact: ranked[0].exact, distance: ranked[0].distance, pattern:'fallback' };
+        specialNote = `特殊结果友情提示：本测试仅供娱乐。标准人格库最高匹配仅 ${ranked[0].similarity}% ，系统已将你强制分配给 HHHH。`;
+      }
+
+      const txt = resultTexts[chosen.code];
+      resultBox.classList.remove('hidden');
+      resultBox.innerHTML = `
+        <div class="code">${displayNames[chosen.code]}</div>
+        <div class="small">匹配度：${chosen.code === 'DRUNK' ? '100% · 酒精异常因子已接管' : chosen.code === 'HHHH' ? chosen.similarity + '% · 标准人格库集体罢工' : chosen.similarity + '%'}</div>
+        <h2>${txt[0]}</h2>
+        <div class="intro">${txt[1]}</div>
+        <p class="desc">${txt[2]}</p>
+        <div class="pattern-grid">
+          <div class="pattern-card">
+            <h4>你的 15 维向量</h4>
+            <div class="small">${order.map(dim => `${dim}:${dimScores[dim].lv}`).join(' ｜ ')}</div>
+          </div>
+          <div class="pattern-card">
+            <h4>最佳常规匹配</h4>
+            <div class="small">${ranked[0].code} ｜ ${displayNames[ranked[0].code]} ｜ ${ranked[0].pattern}</div>
+          </div>
+        </div>
+        <div class="dim-grid">
+          ${order.map(dim => `
+            <div class="dim">
+              <h3>${dim}｜${dimensionExplain[dim].name}</h3>
+              <p>得分：${dimScores[dim].score} / 6</p>
+              <p>等级：${dimScores[dim].lv}</p>
+              <p>${dimensionExplain[dim][dimScores[dim].lv]}</p>
+            </div>
+          `).join('')}
+        </div>
+        <p class="small" style="margin-top:18px;">${specialNote}</p>
+      `;
+      resultBox.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    function resetAll() {
+      document.querySelectorAll('input[type="radio"]').forEach(i => i.checked = false);
+      document.getElementById('conditionalWrap').innerHTML = '';
+      totalCount.textContent = '31';
+      resultBox.classList.add('hidden');
+      resultBox.innerHTML = '';
+      updateAnsweredCount();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    }
+
+    render();
+    document.getElementById('submitBtn').addEventListener('click', compute);
+    document.getElementById('resetBtn').addEventListener('click', resetAll);
+  </script>
+</body>
+</html>

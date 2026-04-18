@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SBTI | International Edition</title>
+  <meta name="description" content="A 31-question chaotic personality test for international users. See your main type, backup type, and 15-dimension profile." />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <section id="intro" class="screen active">
+      <div class="hero glass">
+        <div class="eyebrow">31 questions · 15 dimensions · chaos test</div>
+        <h1>MBTI is old news.<br>SBTI is here.</h1>
+        <div class="sub">Answer 31 absurdly specific questions and find out which cursed archetype fits you best. Your result page shows your main type, backup type, and your 15-dimension score profile.</div>
+        <div class="hero-grid">
+          <div class="mini">
+            <h3>What you get</h3>
+            <ul>
+              <li>Main personality type</li>
+              <li>Backup personality candidate</li>
+              <li>15-dimension score breakdown</li>
+              <li>Original-style result artwork</li>
+            </ul>
+          </div>
+          <div class="mini">
+            <h3>Friendly warning</h3>
+            <p>This is for fun. Do not use it for diagnosis, hiring, dating, breakups, exorcisms, legal decisions, or major life choices made at 2 a.m.</p>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button id="startBtn" class="btn-primary">Start the test</button>
+        </div>
+        <div class="note">Go with your first instinct. Keyboard mode also works: press 1 / 2 / 3 / 4 to choose.</div>
+      </div>
+    </section>
+
+    <section id="quiz" class="screen">
+      <div class="quiz-shell">
+        <div class="quiz-card card">
+          <div class="topbar">
+            <div style="flex:1"><div class="progressWrap"><div id="progressBar" class="progress"></div></div></div>
+            <div id="progressText" class="counter">0 / 0</div>
+          </div>
+          <div class="qmeta">
+            <div id="qBadge" class="badge">Question 1</div>
+            <div id="qMetaRight">Dimension hidden</div>
+          </div>
+          <div id="qTitle" class="qtitle">Loading…</div>
+          <div id="options" class="options"></div>
+          <div class="nav">
+            <button id="prevBtn" class="btn-secondary">Previous</button>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button id="backHomeBtn" class="btn-secondary">Back home</button>
+              <button id="nextBtn" class="btn-primary" disabled>Next</button>
+            </div>
+          </div>
+        </div>
+        <div class="side-card card">
+          <div class="sectionTitle">How it works</div>
+          <div class="muter">Questions appear in random order. If you pick drinking as a hobby, the system may unlock a hidden follow-up question.</div>
+          <div class="sectionBlock">
+            <div class="sectionTitle" style="font-size:16px">Reminder</div>
+            <div class="muter">Try to answer everything. This result is entertainment, not a clinical or professional assessment.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result-grid">
+        <div class="result-card card">
+          <div class="resultImgWrap"><img id="resultImage" class="resultImg" alt="personality result image" /></div>
+          <div class="typeCode" id="typeCode"></div>
+          <div class="typeTitle" id="typeTitle"></div>
+          <div class="typeSub" id="typeSub"></div>
+          <div class="pill" id="matchBadge"></div>
+          <div class="quote" id="typeQuote"></div>
+          <div class="desc" id="typeDesc"></div>
+          <div class="sectionBlock">
+            <div class="sectionTitle">Backup type candidate</div>
+            <div class="typeCode" id="secondCode"></div>
+            <div class="typeTitle" id="secondTitle" style="font-size:clamp(28px,4.2vw,40px)"></div>
+            <div class="typeSub" id="secondBadge"></div>
+            <div class="quote" id="secondQuote"></div>
+            <div class="desc" id="secondDesc"></div>
+          </div>
+          <div class="footerActions">
+            <button id="copyBtn" class="btn-primary">Copy result text</button>
+            <button id="restartBtn" class="btn-secondary">Retake test</button>
+            <button id="homeBtn" class="btn-secondary">Back home</button>
+          </div>
+        </div>
+        <div class="result-card card">
+          <div class="sectionTitle">Result breakdown</div>
+          <div class="miniGrid" id="statGrid"></div>
+          <div class="sectionBlock"><div class="sectionTitle">Your top 3 dimensions</div><div id="top3" class="top3"></div></div>
+          <div class="sectionBlock"><div class="sectionTitle">All 15 dimension scores</div><div id="dimGroup" class="dimGroup"></div></div>
+          <div class="sectionBlock"><div class="muter" id="footerNote"></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="./data-images.js"></script>
+  <script src="./data-core.js"></script>
+  <script src="./data-types.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
